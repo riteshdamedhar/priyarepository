@@ -1,0 +1,165 @@
+﻿<%@ master language="C#" autoeventwireup="true" inherits="MasterPage, App_Web_grzyefyj" %>
+
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script type="text/javascript" src="../css/jquery-1.11.0.min.js"></script>
+    <%--Timer Javascript--%>
+    <%--<script type="text/javascript">
+        function cdtd(request, end)
+        {
+            <%
+            Bussineslayer bl = new Bussineslayer();
+            
+            if (bl.logged_in(Convert.ToInt32(Session["user_id"])) == true && bl.check_subject_id_set_or_not(Convert.ToInt32(Session["subject_id"])) == true)
+            {
+
+                Exam_Request e_r = bl.get_exam_request_detail(Convert.ToInt32(Session["user_id"]));
+
+                DateTime end_time_datetime = e_r.ExamRequestExpire;
+                DateTime request_time_datetime = e_r.ExamRequestDateTime;
+
+
+                string end_time = end_time_datetime.ToString("dd-MMM-yy hh:mm:ss tt");
+                string request_time = request_time_datetime.ToString("dd-MMM-yy hh:mm:ss tt");
+            
+                %>
+                var request_time = new Date();
+                var end_time = new Date(end);
+
+                var timeDiff = end_time.getTime() - request_time.getTime();
+
+                if (timeDiff <= 0) {
+                    clearTimeout(timer);
+                    timer_enable = false;
+                    document.getElementById("Label_time").innerHTML = "Time Out!";
+                    alert("Exam Time is Over!");
+                    Session.Remove("subject_id");
+                    Session.Remove("exam_type");
+                    Session.Remove("exam_expire_date");
+                    Session.Remove("exam_request_date");
+                }
+                else
+                {
+                    var seconds = Math.floor(timeDiff / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    // var days = Math.floor(hours / 24);
+
+                    hours %= 24;
+                    minutes %= 60;
+                    seconds %= 60;
+
+                    if(minutes <= 0)
+                    {
+                        document.getElementById("Label_time").style.color = "red";
+                    }
+
+                    var time_left = hours + " : " + minutes + " : " + seconds;
+                    document.getElementById("Label_time").innerHTML = time_left;
+                    //var timer = setTimeout('cdtd()', 1000);
+                    var timer = setTimeout(function () { cdtd(<% Response.Write("'" + request_time + "', '" + end_time + "'"); %>); }, 1000);
+                }
+                <%
+            }
+            %>
+        }
+    </script>--%>
+    <%--close Timer Javascript--%>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+   <form id="main_master_page" runat="server">
+       <asp:ToolkitScriptManager runat="server">
+       </asp:ToolkitScriptManager>
+       <div id="header">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a href="../default.aspx">Home</a>
+                        </li>
+                        <li>
+                            <a href="../about.aspx">About</a>
+                        </li>
+                    </ul>
+                    <a href="default.aspx" id="logo">
+                        <img src="../images/logo_my.png" alt="Image" /></a>
+                    <ul>
+                        <li>
+                            <a href="../materials.aspx">Materials</a>
+                        </li>
+                        <li>
+                            <a href="../contact.aspx">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+             
+           <!--login and without login !-->
+           <%
+               Bussineslayer bl = new Bussineslayer();
+               
+               if (bl.logged_in(Convert.ToInt32(Session["user_id"])) == true)
+               {
+                   Student_Data user_data = bl.getuserdata(Convert.ToInt32(Session["user_id"]));
+                   %>
+                   <div>
+                       <img src="../<% Response.Write(user_data.profile_image); %>" alt="Image" id="profile_image" />                            
+                            
+                       <div id="welcome_name">Welcome <% Response.Write(user_data.first_name);%>&nbsp;<% Response.Write(user_data.last_name); %></div>
+                       
+                       <div id="logged_in_menu">
+                           <a href="../Default.aspx">Home</a>
+                           <a href="../Student/real_exam_subject.aspx">Real Exam</a>
+                           <a href="../Student/practice_exam_subject.aspx">Practice Exam</a>
+                           <a href="../Student/result.aspx">Results</a>
+                           <a href="../Student/settings.aspx">Settings</a>
+                           <a href="../logout.aspx">Logout</a>
+                          
+                       </div>
+                   </div>
+                   <%
+               }
+               else
+               {
+                   %>
+                   <div>
+                        <ul>
+                            <li>
+                                <a href="login.aspx">Login</a>
+                            </li>
+                            <li>
+                                <a href="registration.aspx">Registration</a>
+                            </li>
+                        </ul>
+                   </div> 
+                   <%
+               }
+           %>
+           <!--close login and without login !-->
+
+       </div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        <div id="footer">
+            <div>
+                <div>
+                    <a href="http://freewebsitetemplates.com/go/facebook/" target="_blank" id="facebook">Facebook</a>
+                    <a href="http://freewebsitetemplates.com/go/twitter/" target="_blank" id="twitter">Twitter</a>
+                    <a href="http://freewebsitetemplates.com/go/googleplus/" target="_blank" id="googleplus">googleplus</a>
+                </div>
+                <p>
+                    &copy; Online Test Applicaion 2014. All rights reserved
+		
+                </p>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

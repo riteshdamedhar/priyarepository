@@ -1,0 +1,101 @@
+﻿<%@ master language="C#" autoeventwireup="true" inherits="Master_Page_MasterPage_administrator, App_Web_grzyefyj" %>
+
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+     <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="main_master_page" runat="server">
+               <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+       </asp:ToolkitScriptManager>
+       <div id="header">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a href="../Administrator/Default.aspx">Home</a>
+                        </li>
+                        <li>
+                            <a href="../about.aspx">About</a>
+                        </li>
+                    </ul>
+                    <a href="default.aspx" id="logo">
+                        <img src="../images/logo_my.png" alt="Image" /></a>
+                    <ul>
+                        <li>
+                            <a href="../materials.aspx">Materials</a>
+                        </li>
+                        <li>
+                            <a href="../contact.aspx">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+             
+           <!--login and without login !-->
+           <%
+               Bussineslayer bl = new Bussineslayer();
+               
+               if (bl.logged_in(Convert.ToInt32(Session["user_id"])) == true)
+               {
+                   Admin_Data user_data = bl.getadmindata(Convert.ToInt32(Session["user_id"]));
+                   %>
+                   <div>
+                       <img src="../<% Response.Write(user_data.profile_image); %>" alt="Image" id="profile_image" />                            
+                            
+                       <div id="welcome_name">Welcome <% Response.Write(user_data.username);%></div>
+                       
+                       <div id="logged_in_menu_admin">
+                           <a href="../Administrator/Default.aspx">Home</a>
+                           <a href="../Administrator/add_subject.aspx">Add Subject</a>
+                           <a href="../Administrator/faculty_details.aspx">Faculty Detail</a>
+                           <a href="../Administrator/student_details.aspx">Student Detail</a>
+                           <a href="../Administrator/settings.aspx">Settings</a>
+                           <a href="../logout.aspx">Logout</a>
+                       </div>
+                   </div>
+                   <%
+               }
+               else
+               {
+                   %>
+                   <div>
+                        <ul>
+                            <li>
+                                <a href="login.aspx">Login</a>
+                            </li>
+                            <li>
+                                <a href="registration.aspx">Registration</a>
+                            </li>
+                        </ul>
+                   </div> 
+                   <%
+               }
+           %>
+           <!--close login and without login !-->
+
+       </div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        <div id="footer">
+            <div>
+                <div>
+                    <a href="http://freewebsitetemplates.com/go/facebook/" target="_blank" id="facebook">Facebook</a>
+                    <a href="http://freewebsitetemplates.com/go/twitter/" target="_blank" id="twitter">Twitter</a>
+                    <a href="http://freewebsitetemplates.com/go/googleplus/" target="_blank" id="googleplus">googleplus</a>
+                </div>
+                <p>
+                    &copy; Online Test Applicaion 2014. All rights reserved
+		
+                </p>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
