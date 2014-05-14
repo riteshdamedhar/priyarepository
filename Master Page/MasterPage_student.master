@@ -1,4 +1,4 @@
-﻿<%@ master language="C#" autoeventwireup="true" inherits="MasterPage, App_Web_yjg355ek" %>
+﻿<%@ master language="C#" autoeventwireup="true" inherits="MasterPage, App_Web_yve2wmtf" %>
 
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
 
@@ -121,7 +121,6 @@
                            <a href="../Student/result.aspx">Results</a>
                            <a href="../Student/settings.aspx">Settings</a>
                            <a href="../logout.aspx">Logout</a>
-                          
                        </div>
                    </div>
                    <%
